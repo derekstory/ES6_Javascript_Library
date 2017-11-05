@@ -54,7 +54,7 @@ Element.prototype = {
 		// If val is passed, set the value and continues allowing chaining
 		if (!isUndefined(val)) {
 			if (isNodelist(this.el)) {
-				this.el.forEach((elm, i) => elm.innerHTML = val);
+				this.el.forEach((el, i) => el.innerHTML = val);
 			} else {
 				this.el.innerHTML = val;
 			}
@@ -68,7 +68,7 @@ Element.prototype = {
 	text: function(val) {
 		if (!isUndefined(val)) {
 			if (isNodelist(this.el)) {
-				this.el.forEach((elm, i) => elm.innerText = val);
+				this.el.forEach((el, i) => el.innerText = val);
 			} else {
 				this.el.innerText = val;
 			}
@@ -87,7 +87,7 @@ Element.prototype = {
 	toggleClass: function(val, bool) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((elm, i) => elm.classList.toggle(...classes, bool));
+			this.el.forEach((el, i) => el.classList.toggle(...classes, bool));
 		} else {
 			this.el.classList.toggle(...classes, bool);
 		}
@@ -98,7 +98,7 @@ Element.prototype = {
 	addClass: function(val) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((elm, i) => elm.classList.add(...classes));
+			this.el.forEach((el, i) => el.classList.add(...classes));
 		} else {
 			this.el.classList.add(...classes);
 		}
@@ -109,7 +109,7 @@ Element.prototype = {
 	removeClass: function(val) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((elm, i) => elm.classList.remove(...classes));
+			this.el.forEach((el, i) => el.classList.remove(...classes));
 		} else {
 			this.el.classList.remove(...classes);
 		}
@@ -132,9 +132,9 @@ Element.prototype = {
 	// $('body').append('<div id="div1">Div 1</div>')	--> Creating a new DOM element
 	append: function(val) {
 		if (isArray(val)) { // If passing an array of DOM objects to be re-appended somewhere else in the DOM
-			val.forEach(elm => this.el[0].append(elm.el[0]));
+			val.forEach(el => this.el[0].append(el.el[0]));
 		} else if (isNodelist(this.el)) {
-			this.el.forEach(elm => elm.append(val));
+			this.el.forEach(el => el.append(val));
 		} else {
 			this.el.append(val);
 		}
@@ -147,7 +147,7 @@ Element.prototype = {
 	// $('body').prepend('<div id="div1">Div 1</div>')	--> Creating a new DOM element
 	prepend: function(val) {
 		if (isArray(val)) { // If passing an array of DOM objects to be re-appended somewhere else in the DOM
-			val.forEach(elm => this.el[0].prepend(elm.el[0]));
+			val.forEach(el => this.el[0].prepend(el.el[0]));
 		} else if (isNodelist(this.el)) {
 			this.el.prepend(val);
 		}
@@ -170,7 +170,7 @@ Element.prototype = {
 			return this.el.style.cssText;
 		} else if (css.length < 1) { // If val is empty string, remove all inline styles
 			if (isNodelist(this.el)) {
-				this.el.forEach((elm) => elm.removeAttribute('style'));
+				this.el.forEach((el) => el.removeAttribute('style'));
 			} else {
 				this.el.removeAttribute('style');
 			}
@@ -182,7 +182,7 @@ Element.prototype = {
 				styles = css;
 			}
 			if (isNodelist(this.el)) {
-				this.el.forEach((elm) => elm.style.cssText += styles);
+				this.el.forEach((el) => el.style.cssText += styles);
 			} else {
 				this.el.style.cssText += styles;
 			}
@@ -201,8 +201,8 @@ Element.prototype = {
 
 	// Click
 	click: function(el) {
-		this.el.forEach((elm, i) => {
-			elm.addEventListener('click', (e) => el($(this.selector, i)));
+		this.el.forEach((element, i) => {
+			element.addEventListener('click', (e) => el($(this.selector, i)));
 		});
 	}
 
