@@ -17,11 +17,11 @@ function isNodelist(el) { return el.constructor === NodeList; }
 function isArray(val) { return Array.isArray(val); }
 
 
-/*---------------
-/////////////////
-// THE LIBRARY //
-/////////////////
----------------*/
+/*-----------------
+///////////////////
+// OBJECT SETTER //
+///////////////////
+-----------------*/
 
 // Create new object
 function $(el, i) {
@@ -35,6 +35,12 @@ var Element = function(el, i) {
 	this.el = !isNum(i) ? document.querySelectorAll(el) : document.querySelectorAll(el)[index];
 	this.selector = el; // Store selector used, gets used to
 };
+
+/*---------------
+/////////////////
+// THE LIBRARY //
+/////////////////
+---------------*/
 
 // Library Methods
 Element.prototype = {
@@ -149,22 +155,34 @@ Element.prototype = {
 	// .css('font-size: 20px')					--> Single property declaration
 	// .css('font-size: 20px; color: blue;') 	--> Multiple property declarations
 	// .css(['font-size: 20px', 'color: blue'])	--> Multiple property declarations can be written as an array
+	// .css("")									--> Remove all inline styles
+	// .css()									--> Returns a string of the inline styles
 	css: function(css) {
-		var styles = [];
-		if (isArray(css)) {
-			css.forEach(style => {
-				styles += `${style};`;
-			});
-		} else {
-			styles = css;
-		}
-		if (isNodelist(this.el)) {
-			this.el.forEach((elm) => elm.style.cssText += styles);
-		} else {
-			this.el.style.cssText += styles;
+
+		if (isUndefined(css)) { // If no value passed, return a string of the inline styles
+			return this.el.style.cssText;
+		} else if (css.length < 1) { // If val is empty string, remove all inline styles
+			if (isNodelist(this.el)) {
+				this.el.forEach((elm) => elm.removeAttribute('style'));
+			} else {
+				this.el.removeAttribute('style');
+			}
+		} else { // Otherwise, set the styles
+			var styles = [];
+			if (isArray(css)) {
+				css.forEach(style => styles += `${style};` );
+			} else {
+				styles = css;
+			}
+			if (isNodelist(this.el)) {
+				this.el.forEach((elm) => elm.style.cssText += styles);
+			} else {
+				this.el.style.cssText += styles;
+			}
 		}
 		return this; // Apply so chaining is allowed
 	},
+
 
 	////////////
 	// EVENTS///
@@ -188,5 +206,5 @@ $('#div1').html(`<h1>Header 1</h1>`).addClass('large').css(['color: orange', 'fo
 
 // Click example
 $('div').click((el) => {
-	el.text('This was clicked!').append('...or was it?').toggleClass('blue').css('font-size: 99px;');
+	el.text('This was clicked!').append('...or was it?').css('font-size: 99px;');
 });
