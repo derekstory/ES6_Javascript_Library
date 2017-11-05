@@ -13,6 +13,9 @@ function isUndefined(val) {	return typeof val === 'undefined'; }
 // Check if this.el is a NodeList or single element
 function isNodelist(el) { return el.constructor === NodeList; }
 
+// Check if value is array
+function isArray(val) { return Array.isArray(val); }
+
 
 /*---------------
 /////////////////
@@ -35,6 +38,10 @@ var Element = function(el, i) {
 
 // Library Methods
 Element.prototype = {
+
+	//////////////////
+	// TEXT && HTML //
+	//////////////////
 
 	// Sets/Gets HTML
 	html: function(val) {
@@ -64,6 +71,11 @@ Element.prototype = {
 			return this.el[0].innerText;
 		}
 	},
+
+
+	/////////////
+	// ClASSES //
+	/////////////
 
 	// Toggle classes - can pass true/false
 	toggleClass: function(val, bool) {
@@ -103,6 +115,11 @@ Element.prototype = {
 		return this.el[0].classList.contains(val);
 	},
 
+
+	///////////////////////
+	// PREPEND && APPEND //
+	///////////////////////
+
 	// Append html to end of element
 	append: function(val) {
 		if (isNodelist(this.el)) {
@@ -113,12 +130,38 @@ Element.prototype = {
 		return this; // Apply so chaining is allowed
 	},
 
-	// Append html to end of element
+	// Prepend html to end of element
 	prepend: function(val) {
 		if (isNodelist(this.el)) {
 			this.el.forEach((elm) => elm.prepend(val));
 		} else {
 			this.el.prepend(val);
+		}
+		return this; // Apply so chaining is allowed
+	},
+
+
+	////////////////
+	// CSS STYLES //
+	////////////////
+
+	// EXAMPLES:
+	// .css('font-size: 20px')					--> Single property declaration
+	// .css('font-size: 20px; color: blue;') 	--> Multiple property declarations
+	// .css(['font-size: 20px', 'color: blue'])	--> Multiple property declarations can be written as an array
+	css: function(css) {
+		var styles = [];
+		if (isArray(css)) {
+			css.forEach(style => {
+				styles += `${style};`;
+			});
+		} else {
+			styles = css;
+		}
+		if (isNodelist(this.el)) {
+			this.el.forEach((elm) => elm.style.cssText += styles);
+		} else {
+			this.el.style.cssText += styles;
 		}
 		return this; // Apply so chaining is allowed
 	},
@@ -141,9 +184,9 @@ Element.prototype = {
 ---------*/
 
 // $('#div1').addClass('blue large');
-$('#div1').html(`<h1>Header 1</h1>`).addClass('large');
+$('#div1').html(`<h1>Header 1</h1>`).addClass('large').css(['color: orange', 'font-size: 10px']);
 
 // Click example
 $('div').click((el) => {
-	el.text('This was clicked!').append('...or was it?').toggleClass('blue');
+	el.text('This was clicked!').append('...or was it?').toggleClass('blue').css('font-size: 99px;');
 });
