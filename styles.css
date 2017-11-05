@@ -1,0 +1,17 @@
+div {
+	display: inline-block;
+	background: red;
+	min-width: 20px;
+}
+
+div.green {
+	background: green;
+}
+
+div.blue {
+	background: blue;
+}
+
+div.large {
+	font-size: 30px;
+}
