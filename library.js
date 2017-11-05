@@ -127,20 +127,28 @@ Element.prototype = {
 	///////////////////////
 
 	// Append html to end of element
+	// Examples:
+	// $('body').append([$(#div1)]); 					--> Moving DOM objects (note: pass elements in array in order to be appended)
+	// $('body').append('<div id="div1">Div 1</div>')	--> Creating a new DOM element
 	append: function(val) {
-		if (isNodelist(this.el)) {
-			this.el.forEach((elm) => elm.append(val));
+		if (isArray(val)) { // If passing an array of DOM objects to be re-appended somewhere else in the DOM
+			val.forEach(elm => this.el[0].append(elm.el[0]));
+		} else if (isNodelist(this.el)) {
+			this.el.forEach(elm => elm.append(val));
 		} else {
 			this.el.append(val);
 		}
 		return this; // Apply so chaining is allowed
 	},
 
-	// Prepend html to end of element
+	// Prepend html to beginning of element
+	// Examples:
+	// $('body').prepend([$(#div1)]); 					--> Moving DOM objects (note: pass elements in array in order to be prepended)
+	// $('body').prepend('<div id="div1">Div 1</div>')	--> Creating a new DOM element
 	prepend: function(val) {
-		if (isNodelist(this.el)) {
-			this.el.forEach((elm) => elm.prepend(val));
-		} else {
+		if (isArray(val)) { // If passing an array of DOM objects to be re-appended somewhere else in the DOM
+			val.forEach(elm => this.el[0].prepend(elm.el[0]));
+		} else if (isNodelist(this.el)) {
 			this.el.prepend(val);
 		}
 		return this; // Apply so chaining is allowed
@@ -158,7 +166,6 @@ Element.prototype = {
 	// .css("")									--> Remove all inline styles
 	// .css()									--> Returns a string of the inline styles
 	css: function(css) {
-
 		if (isUndefined(css)) { // If no value passed, return a string of the inline styles
 			return this.el.style.cssText;
 		} else if (css.length < 1) { // If val is empty string, remove all inline styles
@@ -183,6 +190,10 @@ Element.prototype = {
 		return this; // Apply so chaining is allowed
 	},
 
+	arrange: function(elements) {
+		return this;
+	},
+
 
 	////////////
 	// EVENTS///
@@ -194,6 +205,7 @@ Element.prototype = {
 			elm.addEventListener('click', (e) => el($(this.selector, i)));
 		});
 	}
+
 };
 
 
@@ -208,3 +220,8 @@ $('#div1').html(`<h1>Header 1</h1>`).addClass('large').css(['color: orange', 'fo
 $('div').click((el) => {
 	el.text('This was clicked!').append('...or was it?').css('font-size: 99px;');
 });
+
+var one = $('#div1');
+var two = $('#div2');
+var three = $('#div3');
+$('body').prepend([two, three, one]);
