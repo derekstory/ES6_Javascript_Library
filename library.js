@@ -66,6 +66,7 @@ Element.prototype = {
 
 	// Sets/Gets Text
 	text: function(val) {
+		// If val is passed, set the value and continues allowing chaining
 		if (!isUndefined(val)) {
 			if (isNodelist(this.el)) {
 				this.el.forEach((el, i) => el.innerText = val);
@@ -190,10 +191,6 @@ Element.prototype = {
 		return this; // Apply so chaining is allowed
 	},
 
-	arrange: function(elements) {
-		return this;
-	},
-
 
 	////////////
 	// EVENTS///
@@ -204,6 +201,13 @@ Element.prototype = {
 		this.el.forEach((element, i) => {
 			element.addEventListener('click', (e) => el($(this.selector, i)));
 		});
+	},
+
+	/////////////////
+	// Loop / EACH //
+	/////////////////
+	each: function(el) {
+		this.el.forEach((element, i) => el($(this.selector, i)));
 	}
 
 };
@@ -219,6 +223,10 @@ $('#div1').html(`<h1>Header 1</h1>`).addClass('large').css(['color: orange', 'fo
 // Click example
 $('div').click((el) => {
 	el.text('This was clicked!').append('...or was it?').css('font-size: 99px;');
+});
+
+$('div').each((el) => {
+	el.text('maybe').css('color: blue;');
 });
 
 var one = $('#div1');
