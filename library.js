@@ -205,6 +205,7 @@ Element.prototype = {
 		this.el.forEach((element, i) => {
 			element.addEventListener('click', (e) => el($(this.selector, i)));
 		});
+		return this;
 	},
 
 	/////////////////
@@ -212,6 +213,7 @@ Element.prototype = {
 	/////////////////
 	each: function(el) {
 		this.el.forEach((element, i) => el($(this.selector, i)));
+		return this;
 	}
 
 };
@@ -222,7 +224,7 @@ Element.prototype = {
 ---------*/
 
 // $('#div1').addClass('blue large');
-$('#div1').html(`<h1>Header 1</h1>`).addClass('large blue').css(['color: orange', 'font-size: 10px']);
+$('#div1, #div2').html(`<h1>Header 1</h1>`).addClass('large blue').css(['color: orange', 'font-size: 10px']);
 
 // Click example
 $('div').click((el) => {
