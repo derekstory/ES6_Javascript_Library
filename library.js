@@ -119,7 +119,11 @@ Element.prototype = {
 
 	// Check if element contains a class
 	hasClass: function(val) {
-		return this.el[0].classList.contains(val);
+		if (isNodelist(this.el)) {
+			return this.el[0].classList.contains(val);
+		} else {
+			return this.el.classList.contains(val);
+		}
 	},
 
 
@@ -218,7 +222,7 @@ Element.prototype = {
 ---------*/
 
 // $('#div1').addClass('blue large');
-$('#div1').html(`<h1>Header 1</h1>`).addClass('large').css(['color: orange', 'font-size: 10px']);
+$('#div1').html(`<h1>Header 1</h1>`).addClass('large blue').css(['color: orange', 'font-size: 10px']);
 
 // Click example
 $('div').click((el) => {
@@ -226,7 +230,10 @@ $('div').click((el) => {
 });
 
 $('div').each((el) => {
-	el.text('maybe').css('color: blue;');
+	el.text('maybe');
+	if (el.hasClass('blue')) {
+		el.css('font-size: 100px');
+	}
 });
 
 var one = $('#div1');
