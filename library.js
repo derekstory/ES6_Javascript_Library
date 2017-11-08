@@ -88,7 +88,7 @@ Element.prototype = {
 	toggleClass: function(val, bool) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((el, i) => el.classList.toggle(...classes, bool));
+			this.el.forEach(el => el.classList.toggle(...classes, bool));
 		} else {
 			this.el.classList.toggle(...classes, bool);
 		}
@@ -99,7 +99,7 @@ Element.prototype = {
 	addClass: function(val) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((el, i) => el.classList.add(...classes));
+			this.el.forEach(el => el.classList.add(...classes));
 		} else {
 			this.el.classList.add(...classes);
 		}
@@ -110,7 +110,7 @@ Element.prototype = {
 	removeClass: function(val) {
 		var classes = val.split(" "); // split classes into array
 		if (isNodelist(this.el)) {
-			this.el.forEach((el, i) => el.classList.remove(...classes));
+			this.el.forEach(el => el.classList.remove(...classes));
 		} else {
 			this.el.classList.remove(...classes);
 		}
@@ -175,7 +175,7 @@ Element.prototype = {
 			return this.el.style.cssText;
 		} else if (css.length < 1) { // If val is empty string, remove all inline styles
 			if (isNodelist(this.el)) {
-				this.el.forEach((el) => el.removeAttribute('style'));
+				this.el.forEach(el => el.removeAttribute('style'));
 			} else {
 				this.el.removeAttribute('style');
 			}
@@ -187,7 +187,7 @@ Element.prototype = {
 				styles = css;
 			}
 			if (isNodelist(this.el)) {
-				this.el.forEach((el) => el.style.cssText += styles);
+				this.el.forEach(el => el.style.cssText += styles);
 			} else {
 				this.el.style.cssText += styles;
 			}
@@ -203,7 +203,7 @@ Element.prototype = {
 	// Click
 	click: function(el) {
 		this.el.forEach((element, i) => {
-			element.addEventListener('click', (e) => el($(this.selector, i)));
+			element.addEventListener('click', e => el($(this.selector, i)));
 		});
 		return this;
 	},
@@ -226,9 +226,15 @@ Element.prototype = {
 // $('#div1').addClass('blue large');
 $('#div1, #div2').html(`<h1>Header 1</h1>`).addClass('large blue').css(['color: orange', 'font-size: 10px']);
 
+var one = $('#div1');
+var two = $('#div2');
+var three = $('#div3');
+$('body').prepend([two, three, one]);
+
 // Click example
 $('div').click((el) => {
 	el.text('This was clicked!').append('...or was it?').css('font-size: 99px;');
+	console.log(el);
 });
 
 $('div').each((el) => {
@@ -238,7 +244,4 @@ $('div').each((el) => {
 	}
 });
 
-var one = $('#div1');
-var two = $('#div2');
-var three = $('#div3');
-$('body').prepend([two, three, one]);
+
